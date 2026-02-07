@@ -1,0 +1,327 @@
+#include<fstream.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<dos.h>
+
+
+int px,py,px1,py1,px2,py2;
+int x,y,mx,my,score;
+enum edirection {STOP=0,RIGHT,LEFT,UP,DOWN};
+edirection dir;
+const int width=20;
+const int height=20;
+int flag;
+char choice;
+int a,b;
+
+
+
+
+void setup()
+{
+	flag=0;
+	x=width/2;
+	y=height/2;
+	mx=rand()%width;
+	my=rand()%height;
+	score=0;
+}
+
+
+
+void draw()
+{
+clrscr();
+	for (int i=0; i<width+2; i++)
+	cout<<"#";
+	cout<<endl;
+	for (i=0; i<height; i++)
+	{
+		for (int j=0; j<width; j++)
+		{
+		if (j==0)
+		cout<<"#";
+		if (i==y && j==x)
+		cout<<"C";
+		else if (i==my && j==mx)
+		cout<<"$";
+		else if (i==py && j==px)
+		cout<<"P";
+		else if (i==py1 && j==px1)
+		cout<<"P";
+		else if (i==py2 && j==px2)
+		cout<<"P";
+		else
+		cout<<" ";
+		if (j==width-1)
+		cout<<"#";
+		}
+	cout<<endl;
+	}
+	for (i=0; i<width+2; i++)
+	cout<<"#";
+	cout<<endl;
+	cout<<"Score:"<<score<<endl;
+}
+
+
+
+void input()
+{
+	if (kbhit())
+	{
+		switch(getch())
+		{
+		case'a':
+		dir=LEFT;
+		break;
+		case'd':
+		dir=RIGHT;
+		break;
+		case'w':
+		dir=UP;
+		break;
+		case's':
+		dir=DOWN;
+		break;
+		}
+	}
+}
+
+
+
+void police()
+{
+	switch (score)
+	{
+
+	case 30:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	delay(250);
+	}
+	break;
+
+	case 50:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	delay(250);
+	}
+	break;
+
+	case 70:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	px1=rand()%width;
+	py1=rand()%height;
+	delay(250);
+	}
+	break;
+
+	case 90:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	px1=rand()%width;
+	py1=rand()%height;
+	delay(250);
+	}
+	break;
+
+	case 110:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	px1=rand()%width;
+	py1=rand()%height;
+	px2=rand()%width;
+	py2=rand()%height;
+	delay(250);
+	}
+	break;
+
+	case 130:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	px1=rand()%width;
+	py1=rand()%height;
+	px2=rand()%width;
+	py2=rand()%height;
+	delay(250);
+	}
+	break;
+
+	case 150:
+	{
+	px=rand()%width;
+	py=rand()%height;
+	px1=rand()%width;
+	py1=rand()%height;
+	px2=rand()%width;
+	py2=rand()%height;
+	delay(250);
+	}
+	break;
+
+	default:
+	break;
+	}
+
+	if (score>=200)
+	{
+	px=rand()%width;
+	py=rand()%height;
+	px1=rand()%width;
+	py1=rand()%height;
+	px2=rand()%width;
+	py2=rand()%height;
+	delay(250);
+	}
+
+}
+
+
+
+void logic()
+{
+	switch (dir)
+	{
+	case LEFT:
+	x--;
+	break;
+	case RIGHT:
+	x++;
+	break;
+	case UP:
+	y--;
+	break;
+	case DOWN:
+	y++;
+	break;
+	default:
+	break;
+	}
+
+if (x>width || x<0 || y>height || y<0)
+{
+clrscr();
+cout<<"\n\n\t\t\t\tGAME OVER!!!"<<endl;
+cout<<"\n\n\t\t\tYou have hit yourself into the wall"<<endl;
+cout<<"\n\n\t\t\t\tTotal Score:"<<score<<endl<<endl;
+flag=1;
+}
+
+if (x==mx && y==my)
+{
+score+=10;
+mx=rand()%width;
+my=rand()%height;
+}
+
+police();
+
+if (x==px && y==py || x==px1 && y==py1 || x==px2 && y==py2)
+{
+clrscr();
+cout<<"\n\n\n\t\t\tGAME OVER!!!";
+cout<<"\n\n\t\t\tYou have been caught by POLICE !"<<endl;
+cout<<"\n\t\t\tTotal Score:"<<score<<endl<<endl;
+flag=1;
+}
+
+}
+
+
+void rules()
+{
+	clrscr();
+
+	{
+	ofstream f1;
+	f1.open ("Rules.txt");
+	f1<<"\n\n\n\t\t\tWelcome to Chor - Police Game."<<endl;
+	f1<<"\n\n\n -> You character is of Chor 'C', who steals money '$'.";
+	f1<<"\n\n -> Be careful of Police 'P', they are all around the arena searching you.";
+	f1<<"\n\n -> Use keyboard for the movement of your character.";
+	f1<<"\n\n -> 'W' for UP , 'A' for LEFT , 'S' for DOWN , 'D' for RIGHT";
+	f1<<"\n\n -> Collect money '$' to increase your score.";
+	f1<<"\n\n -> Difficulty increases as the score increases.";
+	f1<<"\n\n -> If you hit the wall you die !!!";
+	f1<<"\n\n -> If you hit the Police you die !!!";
+	f1<<"\n\n -> Press Enter To Continue :)";
+	f1.close();
+	}
+
+
+	{
+	char c;
+	ifstream f2;
+	f2.open ("Rules.txt");
+	if (f2.fail())
+	cout<<"File does not exists!";
+	else
+	{
+	while(c!=EOF)
+	{
+	c=f2.get();
+	cout<<c;
+	}
+	}
+	f2.close();
+	getch();
+	}
+	}
+
+
+void main()
+{
+
+	do
+	{
+	clrscr();
+	cout<<"\n\n\n\n\n\t\t\t * * CHOR POLICE GAME * *";
+	cout<<"\n\n\n\n\t\t\t 1) PLAY \n";
+	cout<<"\n\t\t\t 2) INSTRUCTIONS OF THE GAME\n";
+	cout<<"\n\t\t\t 3) EXIT\n"<<endl<<endl;
+	cin>>a;
+
+	if (a==2)
+	rules();
+
+	else if (a==1)
+	{
+
+	do
+	{
+		setup();
+		while(!flag)
+		{
+		draw();
+		input();
+		logic();
+		delay(150);
+		}
+
+		if (flag)
+		{
+		cout<<"\n\n\n\t\t\tDo you want to play again?"<<endl;
+		cout<<"\n\n\t\t\t'Y' for YES and 'N' for NO:"<<endl<<endl;
+		cin>>choice;
+		}
+
+	}
+	while (choice=='y' || choice=='Y');
+	getch();
+	}
+
+	else if (a==3)
+	flag=1;
+
+	}
+	while (a==2);
+	getch();
+}
